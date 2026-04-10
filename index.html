@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Ayyushi | System Override</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050208;
+            --text-color: #d400ff; /* Electric Purple */
+            --highlight-color: #00f2ff; /* Cyber Cyan */
+            --font-stack: 'VT323', monospace;
+        }
+
+        body {
+            margin: 0; background-color: var(--bg-color);
+            color: var(--text-color); font-family: var(--font-stack);
+            height: 100vh; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        #terminal {
+            width: 85%; max-width: 800px;
+            height: 70vh; font-size: 1.6rem;
+            text-shadow: 0 0 8px rgba(212, 0, 255, 0.4);
+            overflow-y: auto; transition: opacity 2s ease;
+        }
+
+        .line { margin-bottom: 12px; }
+        .prompt { color: var(--highlight-color); margin-right: 10px; }
+        .cursor {
+            display: inline-block; width: 12px; height: 1.2em;
+            background-color: var(--highlight-color);
+            animation: blink 1s infinite; vertical-align: middle;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* SURPRISE BOX */
+        #surprise {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 3s ease;
+        }
+
+        /* SLOW ROTATING STARS */
+        #universe-canvas { position: absolute; z-index: 0; }
+
+        #heart-core {
+            position: relative; width: 300px; height: 300px; z-index: 5;
+        }
+
+        .central-emoji {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); font-size: 5rem;
+            animation: pulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px var(--text-color));
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+        }
+
+        #message-display {
+            font-size: 2.5rem; color: #fff; text-align: center;
+            margin-top: 40px; text-shadow: 0 0 20px var(--highlight-color);
+            z-index: 10; min-height: 120px; transition: opacity 1.5s ease;
+            max-width: 80%
+        }
+
+        .btn-ready {
+            background: transparent; border: 1px solid var(--highlight-color);
+            color: var(--highlight-color); padding: 10px 20px;
+            font-family: var(--font-stack); font-size: 1.2rem;
+            cursor: pointer; transition: 0.5s; margin-top: 20px;
+            z-index: 20; opacity: 0;
+        }
+
+        .btn-ready:hover { background: var(--highlight-color); color: #000; box-shadow: 0 0 20px var(--highlight-color); }
+
+        /* FINAL REVEAL SLIDE */
+        #final-card {
+            position: absolute; width: 100%; height: 100%;
+            background: rgba(5, 2, 8, 0.95);
+            display: none; flex-direction: column; align-items: center;
+            justify-content: center; z-index: 100; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="terminal"></div>
+
+    <div id="surprise">
+        <canvas id="universe-canvas"></canvas>
+        <div id="heart-core">
+            <div class="central-emoji">👸</div>
+        </div>
+        <div id="message-display"></div>
+        <button id="next-btn" class="btn-ready" onclick="showFinal()">Click for the truth...</button>
+    </div>
+
+    <div id="final-card">
+        <h1 style="font-size: 4rem; color: var(--highlight-color);">10.04.2026</h1>
+        <p style="font-size: 2rem; color: #fff; max-width: 600px; padding: 20px;">
+            A traveler's soul, an engineer's mind, and a face that makes the stars jealous.<br><br>
+            Happy 22nd Birthday, <span style="color:var(--text-color)">Ayyushi</span>. <br>
+            May your battery always be at 100% and your heart always be full. 😉✨
+        </p>
+        <button class="btn-ready" style="opacity:1" onclick="location.reload()">Replay the Magic</button>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        async function typeText(text, speed = 70) {
+            const line = document.createElement('div');
+            line.className = 'line';
+            line.innerHTML = `<span class="prompt">guest@ayyushi_heart:~#</span><span class="msg"></span><span class="cursor"></span>`;
+            terminal.appendChild(line);
+            const msgSpan = line.querySelector('.msg');
+            const cursor = line.querySelector('.cursor');
+
+            for (let char of text) {
+                msgSpan.textContent += char;
+                await sleep(speed + Math.random() * 40);
+            }
+            cursor.style.display = 'none';
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        async function startTerminal() {
+            await sleep(1000);
+            await typeText("Accessing restricted files...");
+            await typeText("Warning: High levels of sarcasm and beauty detected.");
+            await sleep(800);
+            await typeText("Target identified: Ayyushi Sha.");
+            await typeText("System analysis... [Electronics Geek]... [Global Traveler]...");
+            await typeText("Checking 'Coolness' quotient... ERROR: Scale exceeded.");
+            await sleep(1000);
+            await typeText("It's April 10th. A very dangerous date.");
+            await typeText("Why? Because 22 years ago, a troublemaker was born.");
+            await sleep(1200);
+            await typeText("Initializing birthday sequence... nice and slow...");
+            await typeText("sudo heart --override --user=Ayyushi");
+            await sleep(2000);
+
+            terminal.style.opacity = "0";
+            await sleep(2000);
+            launchSurprise();
+        }
+
+        async function launchSurprise() {
+            document.getElementById('surprise').style.opacity = "1";
+            document.getElementById('surprise').style.pointerEvents = "auto";
+            initStars();
+            
+            const messages = [
+                "Happy Birthday, Ayyushi! ✨",
+                "22 years of making people look twice. 😉",
+                "The only engineer who can fix a circuit...",
+                "...while breaking hearts at the same time. ⚡",
+                "You like traveling, right?",
+                "Pack your bags, because you're going places...",
+                "But today, the whole world revolves around YOU. 🌍",
+                "Ready for the final transmission?"
+            ];
+
+            const display = document.getElementById('message-display');
+            for (let i = 0; i < messages.length; i++) {
+                display.style.opacity = "0";
+                await sleep(1000);
+                display.textContent = messages[i];
+                display.style.opacity = "1";
+                await sleep(4000); // Slow message transitions
+            }
+
+            document.getElementById('next-btn').style.opacity = "1";
+        }
+
+        function showFinal() {
+            const card = document.getElementById('final-card');
+            card.style.display = 'flex';
+            card.style.opacity = '0';
+            setTimeout(() => { card.style.opacity = '1'; card.style.transition = 'opacity 3s ease'; }, 100);
+        }
+
+        function initStars() {
+            const canvas = document.getElementById('universe-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const stars = Array.from({length: 100}, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5,
+                o: Math.random()
+            }));
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    ctx.fillStyle = `rgba(212, 0, 255, ${Math.abs(Math.sin(s.o))})`;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fill();
+                    s.o += 0.01;
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        startTerminal();
+    </script>
+</body>
+</html>
